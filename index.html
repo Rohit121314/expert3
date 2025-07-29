@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RP - Premium Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --card-bg: #111;
+      --primary: #00ff88;
+      --text: #eee;
+      --font: 'Orbitron', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    header {
+      background: #0c0c0c;
+      padding: 1rem 1rem; /* Adjusted for no overflow */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+
+    /* Logo */
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      position: relative;
+      background: linear-gradient(90deg, #00d4ff, #33aaff, #00d4ff);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 2.5s linear infinite;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    @keyframes shine {
+      0% {
+        background-position: 200% center;
+      }
+      100% {
+        background-position: -200% center;
+      }
+    }
+
+    /* Navigation wrapper for scroll */
+    nav {
+      flex: 1;
+      margin-left: 1rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* smooth scroll iOS */
+    }
+
+    nav ul {
+      display: flex;
+      gap: 1.2rem;
+      min-width: max-content; /* prevent wrapping, enable scroll */
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      user-select: none;
+    }
+
+    nav li {
+      flex: 0 0 auto; /* prevent shrinking */
+    }
+
+    nav a {
+      color: var(--text);
+      font-weight: bold;
+      position: relative;
+      padding: 8px 18px;
+      border-radius: 30px;
+      overflow: hidden;
+      transition: color 0.4s ease;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      display: inline-block;
+      user-select: none;
+    }
+
+    /* Neon hover effect */
+    nav a::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--primary);
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+      border-radius: 30px;
+      filter: drop-shadow(0 0 6px var(--primary));
+    }
+
+    nav a:hover {
+      color: #000;
+      border: 1px solid var(--primary);
+      cursor: pointer;
+    }
+
+    nav a:hover::before {
+      transform: scaleX(1);
+    }
+
+    /* Hide scrollbars */
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+    nav {
+      scrollbar-width: none; /* Firefox */
+    }
+
+    /* Sections */
+    section {
+      padding: 4rem 1.5rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    #hero {
+      text-align: center;
+      background: linear-gradient(135deg, #0e0e0e, #161616);
+      padding: 6rem 1rem;
+    }
+
+    #hero h1 {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+
+    #hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #ccc;
+      user-select: none;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      user-select: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: #33ffad;
+      cursor: pointer;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--primary);
+      font-size: 2rem;
+      user-select: none;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .course-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 10px;
+      border: 1px solid var(--primary);
+      text-align: center;
+      transition: transform 0.3s ease;
+      user-select: none;
+    }
+
+    .course-card:hover {
+      transform: scale(1.03);
+      cursor: pointer;
+    }
+
+    .course-card h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      user-select: none;
+    }
+
+    .price {
+      color: var(--text);
+      font-size: 1.1rem;
+      margin: 0.5rem 0 1rem;
+      user-select: none;
+    }
+
+    .enroll-btn {
+      background: var(--primary);
+      color: #000;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      display: inline-block;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .enroll-btn:hover {
+      background: #33ffad;
+      cursor: pointer;
+    }
+
+    details {
+      background: #101010;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--primary);
+      border-radius: 5px;
+      user-select: none;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--primary);
+      user-select: none;
+    }
+
+    .testimonial-card, .blog-post {
+      background: #101010;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 5px;
+      border-left: 4px solid var(--primary);
+      user-select: none;
+    }
+
+    .testimonial-card .author {
+      margin-top: 0.5rem;
+      color: var(--primary);
+      text-align: right;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: var(--primary);
+      user-select: none;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.2rem;
+      background: #0f0f0f;
+      border: 1px solid var(--primary);
+      color: var(--text);
+      border-radius: 6px;
+      font-family: var(--font);
+    }
+
+    form button {
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--primary);
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background: #33ffad;
+    }
+
+    footer {
+      background: #0c0c0c;
+      padding: 2rem 1rem;
+      text-align: center;
+      color: var(--primary);
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .social-links a {
+      margin: 0 0.5rem;
+      font-size: 1.4rem;
+      user-select: none;
+      transition: color 0.3s ease;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .social-links a:hover {
+      color: #33ffad;
+    }
+
+    /* Hexagon 3D rotating box */
+    .hexagon-container {
+      perspective: 1000px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 3rem;
+      user-select: none;
+    }
+
+    .hexagon {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateHex 10s infinite linear;
+      border-radius: 12px;
+      box-shadow: 0 0 15px var(--primary);
+    }
+
+    .face {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: #111;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-radius: 12px;
+      user-select: none;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .front  { transform: translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .top    { transform: rotateX(90deg) translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+    @keyframes rotateHex {
+      0% { transform: rotateX(0) rotateY(0); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
+
+    /* Responsive hero */
+    @media (max-width: 600px) {
+      #hero h1 {
+        font-size: 2rem;
+      }
+    }
+  .course-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  max-width: 900px;
+  margin: 1rem auto 3rem auto;
+  user-select: none;
+}
+
+.course-photos img {
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 15px var(--primary);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+
+.course-photos img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px #33ffad;
+}
+
+  
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">RP</div>
+  <nav>
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="hexagon-container">
+  <div class="hexagon">
+    <div class="face front">RP</div>
+    <div class="face back">Courses</div>
+    <div class="face top">Learn</div>
+    <div class="face bottom">Now</div>
+    <div class="face left">AI</div>
+    <div class="face right">Design</div>
+  </div>
+</div>
+
+<section id="hero">
+  <h1>Master Skills with Premium Courses</h1>
+  <p>Professional, Practical, and Powerful learning at your fingertips.</p>
+  <a href="#courses" class="btn">Browse Courses</a>
+</section>
+
+<section id="courses">
+  <h2>Top Courses</h2>
+  <div class="courses-grid">
+    <div class="course-card">
+      <h3>HTML & CSS Mastery</h3>
+      <p>Build professional websites from scratch.</p>
+      <div class="price">Rs. 999</div>
+      <a class="enroll-btn" href="#contact">BUY NOW !</a>
+    </div>
+    <div class="course-card">
+      <h3>AI for Beginners</h3>
+      <p>Understand the fundamentals of AI technology.</p>
+      <div class="price">Rs. 1299</div>
+      <a class="enroll-btn" href="#contact">BUY NOW!</a>
+    </div>
+    <div class="course-card">
+      <h3>UI/UX Design</h3>
+      <p>Design clean and modern user interfaces.</p>
+      <div class="price">Rs. 899</div>
+      <a class="enroll-btn" href="#contact">BUY NOW!</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <h2>About RP</h2>
+  <p>At RP, we believe learning should be accessible, engaging, and future-ready. Our premium content is created by industry professionals to ensure you get practical skills and real results.</p>
+</section>
+
+<section id="testimonials">
+  
+  <h2>Testimonials & Courses</h2>
+
+  <!-- Course Photos Gallery -->
+  
+  <div class="course-photos">
+  <img src="https://picsum.photos/seed/htmlcss/150" alt="HTML & CSS" />
+  <img src="https://picsum.photos/seed/ai/150" alt="AI for Beginners" />
+  <img src="https://picsum.photos/seed/uiux/150" alt="UI/UX Design" />
+  <img src="https://picsum.photos/seed/js/150" alt="JavaScript" />
+  <img src="https://picsum.photos/seed/python/150" alt="Python" />
+  <img src="https://picsum.photos/seed/datascience/150" alt="Data Science" />
+  <img src="https://picsum.photos/seed/ml/150" alt="Machine Learning" />
+</div>
+
+  <h2>Testimonials</h2>
+  <div class="testimonial-card">
+    <p>"RP helped me master frontend development. The quality and clarity were top-notch!"</p>
+    <div class="author">– Sita Sharma</div>
+  </div>
+  
+ 
+
+  <div class="testimonial-card">
+    <p>"RP helped me master frontend development. The quality and clarity were top-notch!"</p>
+    <div class="author">– Sita Sharma</div>
+  </div>
+
+  <div class="testimonial-card">
+    <p>"The AI for Beginners course was perfect for starting out. Highly recommended!"</p>
+    <div class="author">– Rahul Thapa</div>
+  </div>
+
+  <div class="testimonial-card">
+    <p>"Amazing UI/UX design lessons. Helped me land a new job in design."</p>
+    <div class="author">– Anjali Gurung</div>
+  </div>
+
+  <div class="testimonial-card">
+    <p>"Great content and excellent instructors. I improved my skills drastically."</p>
+    <div class="author">– Bipin Rai</div>
+  </div>
+
+  <!-- Add more as needed -->
+
+</section>
+
+<section id="faq">
+  <h2>Frequently Asked Questions</h2>
+  <details>
+    <summary>How do I enroll?</summary>
+    <p>Click "Enroll Now" on any course and send us your message through the contact form.</p>
+  </details>
+  <details>
+    <summary>Is there a refund policy?</summary>
+    <p>Yes, we offer a 7-day refund if you’re not satisfied.</p>
+  </details>
+</section>
+
+<section id="blog">
+  <h2>Latest Blog</h2>
+  <div class="blog-post">
+    <h3>Top 5 Skills to Learn in 2025</h3>
+    <p>Stay competitive with the most in-demand skills in the digital economy.</p>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <form action="https://formsubmit.co/your-email@example.com" method="post">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="message">Your Message</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <div class="social-links">
+    <a href="#" title="Facebook">📘</a>
+    <a href="#" title="Twitter">🐦</a>
+    <a href="#" title="Instagram">📸</a>
+  </div>
+  <p>Made by Rohit © 2025 | RP - Premium Courses</p>
+</footer>
+
+</body>
+</html>
